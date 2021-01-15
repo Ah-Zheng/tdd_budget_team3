@@ -1,7 +1,7 @@
 import Budget from '../budget';
 import Accounting from '../Accounting';
 
-describe('Name of the group', () => {
+describe('Accounting', () => {
     let accounting = new Accounting();
     beforeEach(() => {
         accounting = new Accounting();
@@ -20,5 +20,15 @@ describe('Name of the group', () => {
     it('no data', () => {
         accounting.getAll = () => [new Budget('202010', 310)];
         expect(accounting.totalAmount('20200901', '20200901')).toBe(0);
+    });
+
+    it('invalid', () => {
+        accounting.getAll = () => [new Budget('202010', 310)];
+        expect(accounting.totalAmount('20200901', '20200831')).toBe(0);
+    });
+
+    it('cross one month', () => {
+        accounting.getAll = () => [new Budget('202010', 310), new Budget('202011', 300)];
+        expect(accounting.totalAmount('20201031', '20201102')).toBe(30);
     });
 });

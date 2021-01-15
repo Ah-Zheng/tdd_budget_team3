@@ -5,6 +5,10 @@ class Accounting {
     totalAmount(start, end) {
         const startDay = dayjs(start);
         const endDay = dayjs(end);
+
+        if (endDay.isBefore(startDay)) {
+            return 0;
+        }
         const diff = endDay.diff(startDay, 'day') + 1;
         let budgets = this.getAll();
         const startTimeObj = {
@@ -24,11 +28,24 @@ class Accounting {
                 result.push(item);
             }
         });
-        console.log('result :>> ', result);
-        const startAmount = result.length ? result[0].amount : 0;
-        const endAmount = result[1];
 
-        return startAmount / startDay.daysInMonth() * diff;
+        let unitStartAmount = 0;
+        let unitEndAmount = 0;
+
+        if (startTimeObj.year === endTimeObj.year && startTimeObj.month === endTimeObj.month) {
+            const startAmount = result.length ? result[0].amount : 0;
+            return startAmount / startDay.daysInMonth() * diff;
+        }
+        result.forEach(item => {
+            if (item.yearMonth === startTimeString) {
+                unitStartAmount = item.amount / startDay.daysInMonth() * (startDay.daysInMonth() - startDay.date() + 1);
+            }
+            if (item.yearMonth === endTimeString) {
+                unitEndAmount = item.amount / endDay.daysInMonth() * endDay.date();
+            }
+        });
+
+        return unitStartAmount + unitEndAmount;
     }
 
     getAll() {

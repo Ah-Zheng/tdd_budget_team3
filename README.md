@@ -5,5 +5,5 @@
 - [v] 3. 資料庫無資料(no data)
 - [v] 4. 跨一個月(cross one month)
 - [v] 5. 起訖相反(invalid)
-- [x] 6. 跨年跨月()
-- [x] 7. 跨多月()
+- [v] 6. 跨年跨月(cross year cross month)
+- [x] 7. 跨多月(cross months)
